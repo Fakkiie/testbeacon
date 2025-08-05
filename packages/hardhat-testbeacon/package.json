@@ -1,0 +1,24 @@
+{
+  "name": "hardhat-testbeacon",
+  "version": "0.1.1",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "hardhat": ">=2.0.0"
+  },
+  "dependencies": {
+    "@testbeacon/core": "file:../testbeacon-core"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.0",
+    "@types/node": "^18.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/chai": "^4.3.0"
+  }
+}
