@@ -1,22 +1,18 @@
 # TestBeacon
 
-A **TypeScript-built** Hardhat plugin that generates a **single** `{ContractName}-test.ts` file containing a basic `mint()` test stub for your contract. Perfect for TypeScript-based Hardhat projects looking to get a test up and running in seconds.
+A **TypeScript**-built Hardhat plugin that generates a **single** `{ContractName}-test.ts` file containing a basic `mint()` test stub for your Solidity contracts. Get a working test in seconds with zero boilerplate.
 
-## Features
+---
 
-* **One-file output**: Creates exactly one test file named `{ContractName}-test.ts` under `test/`
-* **Mint detection**: Scans the compiled ABI for `mint(address,uint256)` and generates a `minter can mint` test
-* **Zero configuration**: No extra flags or config files—just install, import, and run
+## Prerequisites
 
-## Prerequisites (TypeScript Hardhat Project)
-
-Your consuming project should be set up for TypeScript-based Hardhat development. Ensure you have:
+Ensure your Hardhat project is set up for TypeScript development:
 
 ```bash
 npm install --save-dev hardhat ts-node typescript @nomiclabs/hardhat-ethers ethers chai @types/node @types/mocha @types/chai
 ```
 
-And your `tsconfig.json` includes:
+Add these compiler options to your `tsconfig.json`:
 
 ```jsonc
 {
@@ -32,13 +28,15 @@ And your `tsconfig.json` includes:
 }
 ```
 
-## Installation (Plugin Development)
+---
 
-1. **Clone this repo**
+## Local Development (Plugin)
+
+1. **Clone the repo**
 
    ```bash
    git clone https://github.com/Fakkiie/testbeacon.git
-   cd testbeacon
+   cd testbeacon/packages/hardhat-testbeacon
    ```
 2. **Install and build**
 
@@ -46,32 +44,40 @@ And your `tsconfig.json` includes:
    npm install
    npm run build     # compiles TypeScript → dist/
    ```
-3. **(Optional) Link locally**
+3. **Link into local Hardhat project**
 
    ```bash
-   npm link          # makes `hardhat-testbeacon` available globally
+   npm link          # registers plugin globally
+   cd /path/to/your-hardhat-project
+   npm link hardhat-testbeacon
    ```
+
+---
 
 ## Installation (Consumption)
 
-From any TypeScript Hardhat project:
+In any TypeScript Hardhat project, install via npm:
 
 ```bash
-# If you published to npm:
 npm install --save-dev hardhat-testbeacon
+```
 
-# Or link your local copy:
+Or, if you’re iterating locally:
+
+```bash
 npm link hardhat-testbeacon
 ```
 
+---
+
 ## Usage
 
-1. **Import the plugin** in your `hardhat.config.ts`:
+1. **Import the plugin** in `hardhat.config.ts`:
 
    ```ts
    import { HardhatUserConfig } from "hardhat/config";
    import "@nomiclabs/hardhat-ethers";
-   import "hardhat-testbeacon";    // loads TestBeacon
+   import "hardhat-testbeacon";
 
    const config: HardhatUserConfig = {
      solidity: "0.8.17",
@@ -79,73 +85,73 @@ npm link hardhat-testbeacon
    };
    export default config;
    ```
-
 2. **Generate your test stub**:
 
    ```bash
    npx hardhat testbeacon
    ```
-
-3. **Run the test**:
+3. **Run the generated test**:
 
    ```bash
    npx hardhat test
    ```
 
-Your single test file will be created at:
+The plugin will create:
 
 ```
 test/{ContractName}-test.ts
 ```
 
-## Publishing to npm
+containing a `minter can mint` example.
 
-Once ready, publish both packages:
+---
 
-```bash
-# Core library (if applicable)
-cd packages/testbeacon-core
-npm version patch
-npm publish --access public
+## Testing Locally
 
-# Hardhat plugin
-cd ../hardhat-testbeacon
-npm version patch
-npm publish --access public
-```
-
-Consumers then install via:
+After linking or installing, run:
 
 ```bash
-npm install --save-dev testbeacon-core hardhat-testbeacon
+npx hardhat compile      # compile your contracts
+npx hardhat testbeacon   # generate or overwrite the test stub
+npx hardhat test         # execute the new test suite
 ```
 
-(or your chosen names).
+---
 
 ## Contributing
 
-Contributions are welcome:
+Contributions, issues, and feature requests are welcome!
 
-```bash
-# 1. Fork
-# 2. Clone fork
-git clone https://github.com/your-username/testbeacon.git
-cd testbeacon
+1. Fork the repo on GitHub
+2. Clone your fork:
 
-# 3. Create feature branch
-git checkout -b feature/my-change
+   ```bash
+   git clone https://github.com/your-username/testbeacon.git
+   cd testbeacon/packages/hardhat-testbeacon
+   ```
+3. Create a new branch:
 
-# 4. Install and build
-npm install
-npm run build
+   ```bash
+   git checkout -b feature/my-change
+   ```
+4. Make your changes, then build:
 
-# 5. Commit & push
-git commit -am "feat: describe change"
-git push origin feature/my-change
-```
+   ```bash
+   npm install
+   npm run build
+   ```
+5. Commit and push:
 
-Open a Pull Request on GitHub. Please follow our [Code of Conduct](https://www.contributor-covenant.org/).
+   ```bash
+   git commit -am "feat: describe change"
+   git push origin feature/my-change
+   ```
+6. Open a Pull Request on GitHub
+
+Please adhere to our [Code of Conduct](https://www.contributor-covenant.org/).
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for full text.
+This project is licensed under the MIT License. See [LICENSE](../LICENSE) for details.
