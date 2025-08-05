@@ -1,79 +1,151 @@
-TestBeacon
+# TestBeacon
 
-A Hardhat plugin that generates a single {ContractName}-test.ts file containing a basic mint() test stub for your contract. Ideal for getting one test up and running with minimal setup.
+A **TypeScript-built** Hardhat plugin that generates a **single** `{ContractName}-test.ts` file containing a basic `mint()` test stub for your contract. Perfect for TypeScript-based Hardhat projects looking to get a test up and running in seconds.
 
-Features
+## Features
 
-One-file output: Creates exactly one test file named {ContractName}-test.ts under test/
+* **One-file output**: Creates exactly one test file named `{ContractName}-test.ts` under `test/`
+* **Mint detection**: Scans the compiled ABI for `mint(address,uint256)` and generates a `minter can mint` test
+* **Zero configuration**: No extra flags or config files—just install, import, and run
 
-Mint detection: Scans the compiled ABI for mint(address,uint256) and generates a minter can mint test
+## Prerequisites (TypeScript Hardhat Project)
 
-Zero configuration: No extra flags or config files—just run the task after installing
+Your consuming project should be set up for TypeScript-based Hardhat development. Ensure you have:
 
-Installation
+```bash
+npm install --save-dev hardhat ts-node typescript @nomiclabs/hardhat-ethers ethers chai @types/node @types/mocha @types/chai
+```
 
-Clone the repository
+And your `tsconfig.json` includes:
 
-git clone https://github.com/Fakkiie/testbeacon.git
-cd testbeacon
+```jsonc
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node", "mocha"]
+  }
+}
+```
 
-Install dependencies
+## Installation (Plugin Development)
 
-npm install
+1. **Clone this repo**
 
-Build the plugin
+   ```bash
+   git clone https://github.com/Fakkiie/testbeacon.git
+   cd testbeacon
+   ```
+2. **Install and build**
 
-npm run build
+   ```bash
+   npm install
+   npm run build     # compiles TypeScript → dist/
+   ```
+3. **(Optional) Link locally**
 
-Link locally (for development)
+   ```bash
+   npm link          # makes `hardhat-testbeacon` available globally
+   ```
 
-npm link
-cd /path/to/your-hardhat-project
-npm link hardhat-testbeacon
+## Installation (Consumption)
 
-Or install from npm
+From any TypeScript Hardhat project:
 
+```bash
+# If you published to npm:
 npm install --save-dev hardhat-testbeacon
 
-Usage
+# Or link your local copy:
+npm link hardhat-testbeacon
+```
 
-In your Hardhat project’s config (hardhat.config.js or .ts):
+## Usage
 
-require("hardhat-testbeacon");
-// or in TypeScript:
-// import "hardhat-testbeacon";
+1. **Import the plugin** in your `hardhat.config.ts`:
 
-Run the task to generate your single test stub:
+   ```ts
+   import { HardhatUserConfig } from "hardhat/config";
+   import "@nomiclabs/hardhat-ethers";
+   import "hardhat-testbeacon";    // loads TestBeacon
 
-npx hardhat testbeacon
+   const config: HardhatUserConfig = {
+     solidity: "0.8.17",
+     paths: { tests: "test" }
+   };
+   export default config;
+   ```
 
-Verify the file at test/{ContractName}-test.ts, then run:
+2. **Generate your test stub**:
 
-npx hardhat test
+   ```bash
+   npx hardhat testbeacon
+   ```
 
-Contributing
+3. **Run the test**:
 
-Feel free to open issues and pull requests! To contribute:
+   ```bash
+   npx hardhat test
+   ```
 
-Fork the repo
+Your single test file will be created at:
 
-Create a branch:
+```
+test/{ContractName}-test.ts
+```
 
+## Publishing to npm
+
+Once ready, publish both packages:
+
+```bash
+# Core library (if applicable)
+cd packages/testbeacon-core
+npm version patch
+npm publish --access public
+
+# Hardhat plugin
+cd ../hardhat-testbeacon
+npm version patch
+npm publish --access public
+```
+
+Consumers then install via:
+
+```bash
+npm install --save-dev testbeacon-core hardhat-testbeacon
+```
+
+(or your chosen names).
+
+## Contributing
+
+Contributions are welcome:
+
+```bash
+# 1. Fork
+# 2. Clone fork
+git clone https://github.com/your-username/testbeacon.git
+cd testbeacon
+
+# 3. Create feature branch
 git checkout -b feature/my-change
 
-Make your changes
+# 4. Install and build
+npm install
+npm run build
 
-Commit and push:
-
-git commit -m "feat: description"
+# 5. Commit & push
+git commit -am "feat: describe change"
 git push origin feature/my-change
+```
 
-Open a Pull Request
+Open a Pull Request on GitHub. Please follow our [Code of Conduct](https://www.contributor-covenant.org/).
 
-Please follow our Code of Conduct.
+## License
 
-License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-
+This project is licensed under the MIT License. See the `LICENSE` file for full text.
