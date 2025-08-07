@@ -1,0 +1,16 @@
+{
+  "name": "testbeacon-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Monorepo for testbeacon packages",
+  "workspaces": [
+    "packages/testbeacon-core",
+    "packages/hardhat-testbeacon"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces"
+  },
+  "author": "Fakkiie",
+  "license": "MIT"
+}

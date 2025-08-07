@@ -18,7 +18,7 @@ task("testbeacon", "Auto-generate tests for all contracts")
       for (const tf of tests) {
         const filePath = path.join(outDir, tf.filename);
         fs.writeFileSync(filePath, tf.contents);
-        console.log(`✅  Generated: test/${tf.filename}`);
+        console.log(`Generated: test/${tf.filename}`);
       }
     }
   });
